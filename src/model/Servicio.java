@@ -1,6 +1,7 @@
 package model;
 
 public class Servicio {
+
     private String id;
     private String nombre;
     private double precioBase;
@@ -13,16 +14,27 @@ public class Servicio {
         this.duracionMinutos = duracionMinutos;
     }
 
-    public String getId() { return id; }
-    public String getNombre() { return nombre; }
-    public double getPrecioBase() { return precioBase; }
-    public int getDuracionMinutos() { return duracionMinutos; }
+    public String getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getPrecioBase() {
+        return precioBase;
+    }
+
+    public int getDuracionMinutos() {
+        return duracionMinutos;
+    }
 
     @Override
     public String toString() {
         return "Servicio{" +
-                "id='" + id + ''' +
-                ", nombre='" + nombre + ''' +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", precioBase=" + precioBase +
                 ", duracionMinutos=" + duracionMinutos +
                 '}';

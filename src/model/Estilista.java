@@ -7,16 +7,7 @@ public class Estilista extends Empleado {
     }
 
     @Override
-    public double calcularTarifa() {
-        // Tarifa fija para estilistas (podés cambiarla si quieren)
+    public double getTarifaBase() {
         return 2000.0;
-    }
-
-    @Override
-    public String toString() {
-        return "Estilista{" +
-                "id='" + getId() + '\'' +
-                ", nombre='" + getNombre() + '\'' +
-                '}';
     }
 }

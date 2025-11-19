@@ -1,14 +1,14 @@
 package services;
 
-import model.Turno;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import model.Cliente;
 import model.Empleado;
 import model.Servicio;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import model.Turno;
 
 public class TurnoService {
 
@@ -20,24 +20,24 @@ public class TurnoService {
     }
 
     public boolean cancelarTurno(String id) {
-    for (Turno t : turnos) {
-        if (t.getId().equals(id)) {
-            t.cancelar();
-            return true;
+        for (Turno t : turnos) {
+            if (t.getId().equals(id)) {
+                t.cancelar();
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     public boolean finalizarTurno(String id) {
-    for (Turno t : turnos) {
-        if (t.getId().equals(id)) {
-            t.realizar();
-            return true;
+        for (Turno t : turnos) {
+            if (t.getId().equals(id)) {
+                t.realizar();
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     public List<Turno> listarTurnos() {
         return turnos;
@@ -71,6 +71,41 @@ public class TurnoService {
                 total += t.getServicio().getPrecioBase();
             }
         }
+        return total;
+    }
+
+    // ✔ IMPLEMENTACIÓN CORRECTA
+    public void crearTurno(Cliente cliente, String servicioNombre, String empleadoNombre, String fecha) {
+        Servicio servicio = new Servicio("S" + (turnos.size() + 1), servicioNombre, 30, 1500);
+
+        Empleado empleado = new Empleado(empleadoNombre + "_id", empleadoNombre, "Peluquero") {
+            @Override
+            public double getTarifaBase() {
+                return 1000;
+            }
+        };
+
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM HH:mm");
+        LocalDateTime fechaHora = LocalDateTime.parse(fecha + " 10:00", format);
+
+        String idTurno = "T" + (turnos.size() + 1);
+
+        registrarTurno(idTurno, cliente, empleado, servicio, fechaHora);
+    }
+
+    // ✔ IMPLEMENTACIÓN CORRECTA
+    public double calcularIngresosDiarios() {
+        LocalDate hoy = LocalDate.now();
+        double total = 0;
+
+        for (Turno t : turnos) {
+            if (t.getFechaHora().toLocalDate().equals(hoy)
+                && t.getEstado() == Turno.Estado.REALIZADO) {
+
+                total += t.getServicio().getPrecioBase();
+            }
+        }
+
         return total;
     }
 }

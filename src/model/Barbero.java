@@ -7,16 +7,7 @@ public class Barbero extends Empleado {
     }
 
     @Override
-    public double calcularTarifa() {
-        // Tarifa fija para barberos (podés ajustarla después)
+    public double getTarifaBase() {
         return 1500.0;
-    }
-
-    @Override
-    public String toString() {
-        return "Barbero{" +
-                "id='" + getId() + '\'' +
-                ", nombre='" + getNombre() + '\'' +
-                '}';
     }
 }

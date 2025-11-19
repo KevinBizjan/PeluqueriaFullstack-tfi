@@ -38,7 +38,7 @@ public class Turno {
     @Override
     public String toString() {
         return "Turno{" +
-                "id='" + id + ''' +
+                "id='" + id + '\'' +
                 ", cliente=" + cliente +
                 ", empleado=" + empleado +
                 ", servicio=" + servicio +

@@ -40,15 +40,44 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Crear turno → (a completar)");
+                    System.out.print("Nombre del cliente: ");
+                    String nombreCliente = sc.nextLine();
+                    Cliente cliente = clienteService.buscarPorNombre(nombreCliente);
+
+                    if (cliente == null) {
+                        System.out.println("Cliente no encontrado.");
+                        break;
+                    }
+
+                    System.out.print("Servicio: ");
+                    String servicio = sc.nextLine();
+
+                    System.out.print("Empleado: ");
+                    String empleado = sc.nextLine();
+
+                    System.out.print("Fecha (dd/mm): ");
+                    String fecha = sc.nextLine();
+
+                    turnoService.crearTurno(cliente, servicio, empleado, fecha);
+                    System.out.println("Turno creado");
                     break;
 
                 case 4:
-                    System.out.println("Cancelar turno → (a completar)");
+                    System.out.print("Ingrese el nombre del cliente para cancelar su turno: ");
+                    String nombreCancelar = sc.nextLine();
+
+                    boolean cancelado = turnoService.cancelarTurno(nombreCancelar);
+
+                    if (cancelado) {
+                        System.out.println("Turno cancelado");
+                    } else {
+                        System.out.println("No se encontró turno para ese cliente");
+                    }
                     break;
 
                 case 5:
-                    System.out.println("Ingresos diarios → (a completar)");
+                    double total = turnoService.calcularIngresosDiarios();
+                    System.out.println("Ingresos del día: $" + total);
                     break;
 
                 case 0:
