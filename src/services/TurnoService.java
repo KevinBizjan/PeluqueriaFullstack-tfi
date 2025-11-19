@@ -19,23 +19,25 @@ public class TurnoService {
         turnos.add(t);
     }
 
-    public void cancelarTurno(String id) {
-        for (Turno t : turnos) {
-            if (t.getId().equals(id)) {
-                t.cancelar();
-                return;
-            }
+    public boolean cancelarTurno(String id) {
+    for (Turno t : turnos) {
+        if (t.getId().equals(id)) {
+            t.cancelar();
+            return true;
         }
     }
+    return false;
+}
 
-    public void finalizarTurno(String id) {
-        for (Turno t : turnos) {
-            if (t.getId().equals(id)) {
-                t.realizar();
-                return;
-            }
+    public boolean finalizarTurno(String id) {
+    for (Turno t : turnos) {
+        if (t.getId().equals(id)) {
+            t.realizar();
+            return true;
         }
     }
+    return false;
+}
 
     public List<Turno> listarTurnos() {
         return turnos;
