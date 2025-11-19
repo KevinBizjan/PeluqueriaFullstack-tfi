@@ -9,15 +9,7 @@ import model.Estilista;
 
 public class EmpleadoService {
 
-    private List<Empleado> empleados = new ArrayList<>();
-
-    public void agregarEmpleado(Empleado e) {
-        empleados.add(e);
-    }
-
-    public List<Empleado> listar() {
-        return empleados;
-    }
+    private final List<Empleado> empleados = new ArrayList<>();
 
     public List<Empleado> listarEmpleados() {
         return empleados;
@@ -25,50 +17,35 @@ public class EmpleadoService {
 
     public Empleado buscarPorId(String id) {
         return empleados.stream()
-                .filter(e -> e.getId().equals(id))
+                .filter(e -> e.getId().equalsIgnoreCase(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public boolean eliminar(String id) {
-        return empleados.removeIf(e -> e.getId().equals(id));
+    public Empleado crearEmpleado(String id, String nombre, String tipo) {
+        Empleado nuevo;
+
+        switch (tipo.toLowerCase()) {
+            case "barbero" -> nuevo = new Barbero(id, nombre);
+            case "estilista" -> nuevo = new Estilista(id, nombre);
+            default -> throw new IllegalArgumentException("Tipo de empleado inválido");
+        }
+
+        empleados.add(nuevo);
+        return nuevo;
     }
 
     public void modificar(String id, String nuevoNombre, String nuevaEspecialidad) {
-        Empleado emp = buscarPorId(id);
-        if (emp == null)
+        Empleado e = buscarPorId(id);
+
+        if (e == null)
             throw new ElementoNoEncontradoException("Empleado no encontrado");
 
-        emp.setNombre(nuevoNombre);
-        emp.setEspecialidad(nuevaEspecialidad);
+        if (nuevoNombre != null && !nuevoNombre.isBlank()) e.setNombre(nuevoNombre);
+        if (nuevaEspecialidad != null && !nuevaEspecialidad.isBlank()) e.setEspecialidad(nuevaEspecialidad);
     }
 
-    public Empleado crearEmpleado(String id, String nombre, String tipo) {
-
-        if (tipo.equalsIgnoreCase("Barbero")) {
-            Barbero b = new Barbero(id, nombre);
-            empleados.add(b);
-            return b;
-        }
-
-        if (tipo.equalsIgnoreCase("Estilista")) {
-            Estilista e = new Estilista(id, nombre);
-            empleados.add(e);
-            return e;
-        }
-
-        throw new IllegalArgumentException("Tipo de empleado inválido: " + tipo);
-    }
-
-    public Empleado crearBarbero(String id, String nombre) {
-        Barbero b = new Barbero(id, nombre);
-        empleados.add(b);
-        return b;
-    }
-
-    public Empleado crearEstilista(String id, String nombre) {
-        Estilista e = new Estilista(id, nombre);
-        empleados.add(e);
-        return e;
+    public boolean eliminar(String id) {
+        return empleados.removeIf(e -> e.getId().equalsIgnoreCase(id));
     }
 }

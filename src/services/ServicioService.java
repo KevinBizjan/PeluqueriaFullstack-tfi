@@ -1,69 +1,67 @@
 package services;
 
-import model.Servicio;
 import exceptions.ElementoNoEncontradoException;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import model.Servicio;
 
 public class ServicioService {
 
-    private final Map<String, Servicio> serviciosPorId = new HashMap<>();
-    private final AtomicInteger contadorId = new AtomicInteger(1);
+    private final List<Servicio> servicios = new ArrayList<>();
 
-    // devuelve servicio con id asignado
     public Servicio agregarServicio(Servicio servicio) {
-        String id = servicio.getId() != null ? servicio.getId() : "S" + contadorId.getAndIncrement();
-        Servicio s = new Servicio(id, servicio.getNombre(), servicio.getPrecioBase(), servicio.getDuracionMinutos());
-        serviciosPorId.put(s.getId(), s);
-        return s;
+
+    String nuevoId = (servicio.getId() == null || servicio.getId().isBlank())
+            ? "S" + UUID.randomUUID().toString().substring(0, 6)
+            : servicio.getId();
+
+    boolean existe = servicios.stream()
+            .anyMatch(s -> nuevoId.equalsIgnoreCase(s.getId()));
+
+    if (existe) {
+        throw new IllegalArgumentException("Ya existe un servicio con ID: " + nuevoId);
     }
 
-    // Listar orden por nombre
-    public List<Servicio> listarServicios() {
-        return serviciosPorId.values()
-                .stream()
-                .sorted(Comparator.comparing(Servicio::getNombre, Comparator.nullsLast(String::compareTo)))
-                .collect(Collectors.toList());
+    Servicio nuevo = new Servicio(
+            nuevoId,
+            servicio.getNombre(),
+            servicio.getPrecioBase(),
+            servicio.getDuracionMinutos()
+    );
+
+    servicios.add(nuevo);
+    return nuevo;
     }
 
 
     public Servicio buscarPorId(String id) {
-        Servicio s = serviciosPorId.get(id);
-        if (s == null) throw new ElementoNoEncontradoException("Servicio con id " + id + " no encontrado");
-        return s;
+        return servicios.stream()
+                .filter(s -> s.getId().equalsIgnoreCase(id))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ElementoNoEncontradoException("Servicio no encontrado: " + id));
     }
 
+    public List<Servicio> buscarPorNombre(String nombre) {
+        return servicios.stream()
+                .filter(s -> s.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+                .toList();
+    }
 
-    public Servicio modificarServicio(String id, String nuevoNombre, Double nuevoPrecio, Integer nuevaDuracion) {
-        Servicio s = serviciosPorId.get(id);
-        if (s == null) throw new ElementoNoEncontradoException("Servicio con id " + id + " no encontrado");
+    public void modificarServicio(String id, String nuevoNombre, Double nuevoPrecio, Integer nuevaDuracion) {
+        Servicio s = buscarPorId(id);
+
         if (nuevoNombre != null) s.setNombre(nuevoNombre);
         if (nuevoPrecio != null) s.setPrecioBase(nuevoPrecio);
         if (nuevaDuracion != null) s.setDuracionMinutos(nuevaDuracion);
-        return s;
     }
-
 
     public boolean eliminarServicio(String id) {
-        return serviciosPorId.remove(id) != null;
+        return servicios.removeIf(s -> s.getId().equalsIgnoreCase(id));
     }
 
-    // Buscar por nombre (fuzzy)
-    public List<Servicio> buscarPorNombre(String nombre) {
-        if (nombre == null || nombre.isBlank()) return Collections.emptyList();
-        String q = nombre.trim().toLowerCase();
-        return serviciosPorId.values().stream()
-                .filter(s -> s.getNombre().toLowerCase().contains(q))
-                .collect(Collectors.toList());
-    }
-
-    public boolean existeServicio(String id) {
-        return serviciosPorId.containsKey(id);
-    }
-
-    public int cantidadServicios() {
-        return serviciosPorId.size();
+    public List<Servicio> listarServicios() {
+        return servicios;
     }
 }
