@@ -189,7 +189,8 @@ public class Main {
             op = leerInt("Opción: ");
             try {
                 switch (op) {
-                    case 1 -> empleadoService.listarEmpleados().forEach(System.out::println);
+                    case 1 -> empleadoService.listarEmpleados()
+                         .forEach(e -> System.out.println(e.toString()));
                     case 2 -> {
                         String id = "E" + UUID.randomUUID().toString().substring(0, 6);
                         String nombre = leerString("Nombre: ");
@@ -220,7 +221,7 @@ public class Main {
             System.out.println("1. Crear turno");
             System.out.println("2. Cancelar turno (por ID)");
             System.out.println("3. Finalizar turno (marcar realizado)");
-            System.out.println("4. Listar turnos por fecha");
+            System.out.println("4. Listar turnos por día");
             System.out.println("5. Listar turnos por empleado");
             System.out.println("6. Listar todos los turnos");
             System.out.println("0. Volver");
@@ -240,6 +241,8 @@ public class Main {
                     }
                     case 4 -> {
                         LocalDate fecha = leerFechaSinHora("Fecha (dd/MM/yyyy): ");
+                        if (fecha == null) return;
+
                         turnoService.listarPorFecha(fecha).forEach(System.out::println);
                     }
                     case 5 -> {
@@ -396,6 +399,9 @@ public class Main {
         while (true) {
             System.out.print(prompt);
             String line = sc.nextLine().trim();
+            if (line.isBlank()) {
+                return null;
+            }
             try {
                 return LocalDate.parse(line, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             } catch (DateTimeParseException ex) {
@@ -403,6 +409,7 @@ public class Main {
             }
         }
     }
+
 
     // Seed de datos
     private static void seedDatosIniciales(ClienteService cs, ServicioService ss, EmpleadoService es) {

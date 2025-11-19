@@ -14,6 +14,15 @@ public abstract class Empleado implements Atendible {
         this.especialidad = especialidad;
     }
 
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", especialidad='" + especialidad + '\'' +
+                '}';
+    }
+    
     public String getId() { return id; }
     public String getNombre() { return nombre; }
     public String getEspecialidad() { return especialidad; }
