@@ -74,7 +74,6 @@ public class TurnoService {
         return total;
     }
 
-    // ✔ IMPLEMENTACIÓN CORRECTA
     public void crearTurno(Cliente cliente, String servicioNombre, String empleadoNombre, String fecha) {
         Servicio servicio = new Servicio("S" + (turnos.size() + 1), servicioNombre, 30, 1500);
 
@@ -93,7 +92,6 @@ public class TurnoService {
         registrarTurno(idTurno, cliente, empleado, servicio, fechaHora);
     }
 
-    // ✔ IMPLEMENTACIÓN CORRECTA
     public double calcularIngresosDiarios() {
         LocalDate hoy = LocalDate.now();
         double total = 0;
@@ -108,4 +106,13 @@ public class TurnoService {
 
         return total;
     }
+
+    public boolean estaDisponible(String empleadoId, LocalDateTime fechaHora) {
+    return turnos.stream().noneMatch(t ->
+            t.getEmpleado().getId().equals(empleadoId)
+                    && t.getFechaHora().equals(fechaHora)
+                    && t.getEstado() == Turno.Estado.PENDIENTE
+    );
+    }
+
 }
