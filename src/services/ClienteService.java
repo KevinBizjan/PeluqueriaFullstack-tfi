@@ -7,18 +7,23 @@ import java.util.List;
 public class ClienteService {
     private List<Cliente> clientes = new ArrayList<>();
 
-    public void registrarCliente(Cliente cliente) {
+    // Registrar cliente
+    public void agregarCliente(Cliente cliente) {
         clientes.add(cliente);
     }
 
-    public Cliente buscarPorDNI(String dni) {
+    // Buscar por nombre
+    public Cliente buscarPorNombre(String nombre) {
         for (Cliente c : clientes) {
-            if (c.getDni().equals(dni)) return c;
+            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                return c;
+            }
         }
         return null;
     }
 
-    public List<Cliente> getClientes() {
+    // Listar todos
+    public List<Cliente> listarClientes() {
         return clientes;
     }
 }
