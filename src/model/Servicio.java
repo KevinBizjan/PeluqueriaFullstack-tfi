@@ -21,8 +21,8 @@ public class Servicio {
     @Override
     public String toString() {
         return "Servicio{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
+                "id='" + id + ''' +
+                ", nombre='" + nombre + ''' +
                 ", precioBase=" + precioBase +
                 ", duracionMinutos=" + duracionMinutos +
                 '}';
