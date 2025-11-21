@@ -1,3 +1,12 @@
+/**
+ * Servicio de gestión de servicios de peluquería.
+ * Permite registrar, modificar, eliminar y buscar servicios.
+ *
+ * <p>Valida precios, duración y evita duplicados.</p>
+ *
+ * @author Thomas
+ */
+
 package services;
 
 import exceptions.ServicioInvalidoException;

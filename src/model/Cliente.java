@@ -1,3 +1,12 @@
+/**
+ * Representa un cliente de la peluquería.
+ * Contiene datos personales y métodos de acceso.
+ *
+ * <p>Incluye: nombre, apellido, DNI y teléfono.</p>
+ *
+ * @author Kevin
+ */
+
 package model;
 
 import java.util.Objects;
@@ -49,7 +58,7 @@ public class Cliente {
     }
 
 
-    // Un cliente por DNI (clave única) permite usar HashSet/Map correctamente.
+    // Un cliente por DNI (clave única).
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

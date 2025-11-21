@@ -65,7 +65,7 @@ public class Main {
     }
 
     private static void mostrarMenuPrincipal() {
-        System.out.println("\n===== PELUQUERÍA - MENÚ PRINCIPAL =====");
+        System.out.println("\nPELUQUERÍA FULLSTACK - MENÚ PRINCIPAL");
         System.out.println("1. Gestión de clientes");
         System.out.println("2. Gestión de servicios");
         System.out.println("3. Gestión de empleados");

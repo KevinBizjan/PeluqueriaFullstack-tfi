@@ -1,3 +1,9 @@
+/**
+ * Especialización de Empleado para barberos.
+ *
+ * @author Kevin
+ */
+
 package model;
 
 public class Barbero extends Empleado {

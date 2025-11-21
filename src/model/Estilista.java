@@ -1,3 +1,9 @@
+/**
+ * Especialización de Empleado para estilistas.
+ *
+ * @author Kevin
+ */
+
 package model;
 
 public class Estilista extends Empleado {

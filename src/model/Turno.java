@@ -1,3 +1,12 @@
+/**
+ * Representa un turno agendado en la peluquería.
+ * Contiene cliente, empleado, servicio, fecha, hora y estado.
+ *
+ * Estados posibles: PENDIENTE, CANCELADO, REALIZADO.
+ *
+ * @author Kevin
+ */
+
 package model;
 
 import java.time.LocalDateTime;

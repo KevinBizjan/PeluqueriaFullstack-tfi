@@ -47,6 +47,21 @@ public class MenuEmpleados {
             String nombre = leerString("Nombre: ");
             String tipo = leerString("Tipo (Barbero/Estilista): ");
 
+            if (!esNombreValido(nombre)) {
+                System.out.println("El nombre solo puede contener letras.");
+                return;
+            }
+
+            if (nombre.isBlank()) {
+                System.out.println("El nombre no puede estar vacío.");
+                return;
+            }
+
+            if (!tipo.equalsIgnoreCase("barbero") && !tipo.equalsIgnoreCase("estilista")) {
+                System.out.println("Tipo inválido. Debe ser Barbero o Estilista.");
+                return;
+            }
+
             Empleado e = empleadoService.crearEmpleado(id, nombre, tipo);
 
             System.out.println("Empleado creado: " + e);
@@ -63,11 +78,9 @@ public class MenuEmpleados {
         try {
             System.out.println(empleadoService.buscarPorId(id));
         } catch (exceptions.EmpleadoNoEncontradoException ex) {
-            System.out.println("⚠ " + ex.getMessage());
+            System.out.println(" " + ex.getMessage());
         }
     }
-
-
 
     private String leerString(String txt) {
         System.out.print(txt);
@@ -79,9 +92,13 @@ public class MenuEmpleados {
             System.out.print(txt);
             try {
                 return Integer.parseInt(sc.nextLine());
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Número inválido");
             }
         }
+    }
+    
+    private boolean esNombreValido(String texto) {
+        return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+");
     }
 }

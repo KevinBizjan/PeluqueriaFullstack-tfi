@@ -1,3 +1,12 @@
+/**
+ * Representa un servicio ofrecido en la peluquería.
+ * Cada servicio tiene un precio base, nombre y duración.
+ *
+ * <p>Ejemplos: Corte hombre, Barba, Tintura.</p>
+ *
+ * @author Kevin
+ */
+
 package model;
 
 import java.util.Objects;

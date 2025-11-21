@@ -1,3 +1,12 @@
+/**
+ * Servicio principal de gestión de turnos.
+ * Encargado de registrar turnos, validar disponibilidad,
+ * cancelar y finalizar turnos.
+ *
+ * <p>También permite generar reportes por día o empleado.</p>
+ *
+ * @author Thomas
+ */
 package services;
 
 import exceptions.TurnoNoDisponibleException;
@@ -16,14 +25,15 @@ public class TurnoService {
 
     private final List<Turno> turnos = new ArrayList<>();
 
-    //CRUD BÁSICO DE TURNOS
-
     public void registrarTurno(String id,
                                Cliente cliente,
                                Empleado empleado,
                                Servicio servicio,
                                LocalDateTime fechaHora) {
         Turno t = new Turno(id, cliente, empleado, servicio, fechaHora);
+        if (fechaHora.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("La fecha del turno no puede ser anterior a hoy.");
+        }
         if (!estaDisponible(empleado.getId(), fechaHora)) {
             throw new TurnoNoDisponibleException(
                     "El empleado " + empleado.getNombre() + " no está disponible en ese horario."

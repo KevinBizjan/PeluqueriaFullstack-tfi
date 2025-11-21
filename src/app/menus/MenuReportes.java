@@ -153,7 +153,10 @@ public class MenuReportes {
                 return Integer.parseInt(line);
             } catch (NumberFormatException ex) {
                 System.out.println("Número inválido. Intente nuevamente.");
+            } catch (Exception ex) {
+                System.out.println(" " + ex.getMessage()); 
             }
         }
     }
 }
+

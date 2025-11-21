@@ -1,3 +1,12 @@
+/**
+ * Clase abstracta para empleados de la peluquería.
+ * Contiene ID, nombre y especialidad.
+ *
+ * <p>Subclases: Barbero, Estilista.</p>
+ *
+ * @author Kevin
+ */
+
 package model;
 
 import util.Atendible;
