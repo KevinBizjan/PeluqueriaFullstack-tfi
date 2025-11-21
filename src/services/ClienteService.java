@@ -18,6 +18,15 @@ public class ClienteService {
                     "Ya existe un cliente con DNI: " + c.getDni()
             );
         }
+        if (!c.getDni().matches("\\d+")) {
+            throw new IllegalArgumentException("El DNI debe ser numérico.");
+        }
+        if (!c.getTelefono().matches("\\d+")) {
+            throw new IllegalArgumentException("El teléfono debe ser numérico.");
+        }
+        if (c.getNombre().isBlank() || c.getApellido().isBlank()) {
+            throw new IllegalArgumentException("El nombre y apellido son obligatorios.");
+        }
         clientes.add(c);
     }
 
@@ -53,3 +62,4 @@ public class ClienteService {
         return clientes;
     }
 }
+

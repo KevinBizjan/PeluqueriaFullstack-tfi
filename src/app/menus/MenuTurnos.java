@@ -78,7 +78,6 @@ public class MenuTurnos {
 
             String q = leerString("Buscar cliente por DNI o nombre: ");
             Cliente cliente = buscarCliente(q);
-
             if (cliente == null) {
                 System.out.println("No se encontró cliente.");
                 return;
@@ -88,18 +87,32 @@ public class MenuTurnos {
             System.out.println("Seleccione servicio:");
             IntStream.range(0, servicios.size())
                     .forEach(i -> System.out.println((i + 1) + ". " + servicios.get(i)));
-            Servicio servicio = servicios.get(leerInt("Opción: ") - 1);
+            int opServ = leerInt("Opción: ");
+            if (opServ < 1 || opServ > servicios.size()) {
+                System.out.println("Opción de servicio inválida.");
+                return;
+            }
+            Servicio servicio = servicios.get(opServ - 1);
 
             List<Empleado> empleados = empleadoService.listarEmpleados();
             System.out.println("Seleccione empleado:");
             IntStream.range(0, empleados.size())
                     .forEach(i -> System.out.println((i + 1) + ". " + empleados.get(i)));
-            Empleado empleado = empleados.get(leerInt("Opción: ") - 1);
+            int opEmp = leerInt("Opción: ");
+            if (opEmp < 1 || opEmp > empleados.size()) {
+                System.out.println("Opción de empleado inválida.");
+                return;
+            }
+            Empleado empleado = empleados.get(opEmp - 1);
 
             LocalDateTime fechaHora = LocalDateTime.parse(
                     leerString("Fecha y hora (dd/MM/yyyy HH:mm): "),
                     FECHA_HORA
             );
+            if (fechaHora.isBefore(LocalDateTime.now())) {
+                System.out.println("No se pueden asignar turnos en el pasado.");
+                return;
+            }
 
             String id = "T" + UUID.randomUUID().toString().substring(0, 6);
             turnoService.registrarTurno(id, cliente, empleado, servicio, fechaHora);
@@ -112,7 +125,6 @@ public class MenuTurnos {
             System.out.println("Error: " + ex.getMessage());
         }
     }
-
 
     private Cliente buscarCliente(String q) {
         if (q.matches("\\d+")) {
@@ -167,7 +179,7 @@ public class MenuTurnos {
             System.out.print(txt);
             try {
                 return Integer.parseInt(sc.nextLine());
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Número inválido.");
             }
         }
