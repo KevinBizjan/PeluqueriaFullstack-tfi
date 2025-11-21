@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Turno {
     public enum Estado {
@@ -38,12 +37,27 @@ public class Turno {
 
     @Override
     public String toString() {
-        return String.format(
-                "%s - %s - %s - %s",
-                id,
-                fechaHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+        String fecha = fechaHora.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+
+        return """
+            ─────────────────────────────────────────
+            %s
+            Servicio: %s
+            Cliente: %s %s (DNI %s)
+            Empleado: %s (%s)
+            Estado: %s
+            ID: %s
+            """.formatted(
+                fecha,
                 servicio.getNombre(),
-                empleado.getNombre()
+                cliente.getNombre(),
+                cliente.getApellido(),
+                cliente.getDni(),
+                empleado.getNombre(),
+                empleado.getEspecialidad(),
+                estado,
+                id
         );
     }
+
 }

@@ -26,13 +26,15 @@ public class Servicio {
 
     @Override
     public String toString() {
-        return "Servicio{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", precioBase=" + precioBase +
-                ", duracionMinutos=" + duracionMinutos +
-                '}';
+        return String.format(
+            "Servicio: %-8s | %-20s | $%-8.2f | %d min",
+            (id == null ? "-" : id),
+            nombre,
+            precioBase,
+            duracionMinutos
+        );
     }
+
 
     // igualdad por id del servicio
     @Override
@@ -47,4 +49,5 @@ public class Servicio {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

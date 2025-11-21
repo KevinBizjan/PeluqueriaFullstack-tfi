@@ -38,14 +38,16 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                (id != null ? "id='" + id + "', " : "") +
-                "nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", dni='" + dni + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
+        return String.format(
+            "Cliente: %-10s | %-10s %-12s | DNI: %-10s | Tel: %s",
+            (id == null ? "-" : id),
+            nombre,
+            apellido,
+            dni,
+            telefono
+        );
     }
+
 
     // Un cliente por DNI (clave única) permite usar HashSet/Map correctamente.
     @Override
@@ -60,4 +62,5 @@ public class Cliente {
     public int hashCode() {
         return Objects.hash(dni);
     }
+
 }

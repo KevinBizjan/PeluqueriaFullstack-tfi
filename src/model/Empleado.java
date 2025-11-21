@@ -16,12 +16,14 @@ public abstract class Empleado implements Atendible {
 
     @Override
     public String toString() {
-        return "Empleado{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", especialidad='" + especialidad + '\'' +
-                '}';
+        return String.format(
+            "Empleado: %-6s | %-12s | Especialidad: %s",
+            id,
+            nombre,
+            especialidad
+        );
     }
+
     
     public String getId() { return id; }
     public String getNombre() { return nombre; }
@@ -37,4 +39,5 @@ public abstract class Empleado implements Atendible {
     public double calcularTarifa(model.Servicio servicio) {
         return getTarifaBase() + servicio.getPrecioBase();
     }
+
 }
