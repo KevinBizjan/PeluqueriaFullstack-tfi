@@ -17,6 +17,20 @@ import model.Cliente;
 public class ClienteService {
 
     private final List<Cliente> clientes = new ArrayList<>();
+    private final String[] historial = new String[10];
+    private int indiceHistorial = 0;
+
+    private void agregarHistorial(String mensaje) {
+        historial[indiceHistorial % historial.length] = mensaje;
+        indiceHistorial++;
+    }
+
+    public void mostrarHistorial() {
+        System.out.println("\n--- Historial de acciones (ClienteService) ---");
+        for (String h : historial) {
+            if (h != null) System.out.println("- " + h);
+        }
+    }
 
     public void agregarCliente(Cliente c) {
         // Validar duplicado por DNI
@@ -37,6 +51,7 @@ public class ClienteService {
             throw new IllegalArgumentException("El nombre y apellido son obligatorios.");
         }
         clientes.add(c);
+        agregarHistorial("Cliente agregado: DNI " + c.getDni());
     }
 
     public Cliente buscarPorDni(String dni) {
@@ -61,13 +76,16 @@ public class ClienteService {
         if (nuevoNombre != null) c.setNombre(nuevoNombre);
         if (nuevoApellido != null) c.setApellido(nuevoApellido);
         if (nuevoTelefono != null) c.setTelefono(nuevoTelefono);
+        agregarHistorial("Cliente modificado: DNI " + dni);
     }
 
     public boolean eliminarPorDni(String dni) {
+        agregarHistorial("Cliente eliminado: DNI " + dni);
         return clientes.removeIf(c -> c.getDni().equals(dni));
     }
 
     public List<Cliente> listarClientes() {
         return clientes;
     }
+
 }
