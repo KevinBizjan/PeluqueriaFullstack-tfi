@@ -43,15 +43,24 @@ public class MenuServicios {
                 }
             } catch (ElementoNoEncontradoException | IllegalArgumentException | ServicioInvalidoException ex) {
                 System.out.println("Error: " + ex.getMessage());
+            } catch (Exception ex) {
+                System.out.println(" " + ex.getMessage());
             }
-
         } while (op != 0);
     }
 
     private void agregar() {
         String nombre = leerString("Nombre: ");
+        if (nombre.isBlank())
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+
         double precio = leerDouble("Precio: ");
+        if (precio <= 0)
+            throw new IllegalArgumentException("El precio debe ser mayor a 0.");
+
         int duracion = leerInt("Duración en minutos: ");
+        if (duracion <= 0)
+            throw new IllegalArgumentException("La duración debe ser mayor a 0.");
 
         Servicio s = new Servicio(null, nombre, precio, duracion);
         s = servicioService.agregarServicio(s);
@@ -76,8 +85,8 @@ public class MenuServicios {
         String precioTxt = leerString("Nuevo precio (enter=mantener): ");
         String durTxt = leerString("Nueva duración (enter=mantener): ");
 
-        Double precio = precioTxt.isBlank() ? null : Double.parseDouble(precioTxt);
-        Integer dur = durTxt.isBlank() ? null : Integer.parseInt(durTxt);
+        Double precio = precioTxt.isBlank() ? null : Double.valueOf(precioTxt);
+        Integer dur = durTxt.isBlank() ? null : Integer.valueOf(durTxt);
 
         servicioService.modificarServicio(id,
                 nuevoNombre.isBlank() ? null : nuevoNombre,
@@ -108,7 +117,7 @@ public class MenuServicios {
             System.out.print(txt);
             try {
                 return Integer.parseInt(sc.nextLine());
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Número inválido");
             }
         }
@@ -119,9 +128,13 @@ public class MenuServicios {
             System.out.print(txt);
             try {
                 return Double.parseDouble(sc.nextLine());
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Número inválido");
             }
         }
+    }
+    
+    private boolean esNombreValido(String texto) {
+        return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+");
     }
 }

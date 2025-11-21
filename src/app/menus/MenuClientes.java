@@ -43,15 +43,36 @@ public class MenuClientes {
                 System.out.println(" " + ex.getMessage());
             } catch (IllegalArgumentException ex) {
                 System.out.println("Error: " + ex.getMessage());
+            } catch (Exception ex) {
+                System.out.println(" " + ex.getMessage());
             }
         } while (op != 0);
     }
 
     private void agregar() {
         String nombre = leerString("Nombre: ");
+         if (!esNombreValido(nombre)) {
+            System.out.println("El nombre solo puede contener letras.");
+            return;
+        }
+        if (nombre.isBlank())
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+
         String apellido = leerString("Apellido: ");
+        if (!esNombreValido(apellido)) {
+            System.out.println("El apellido solo puede contener letras.");
+            return;
+        }
+        if (apellido.isBlank())
+            throw new IllegalArgumentException("El apellido no puede estar vacío.");
+
         String dni = leerString("DNI: ");
+        if (!dni.matches("\\d+"))
+            throw new IllegalArgumentException("El DNI debe ser numérico.");
+
         String telefono = leerString("Teléfono: ");
+        if (!telefono.matches("\\d+"))
+            throw new IllegalArgumentException("El teléfono debe ser numérico.");
 
         Cliente c = new Cliente(null, nombre, apellido, dni, telefono);
         clienteService.agregarCliente(c);
@@ -61,6 +82,10 @@ public class MenuClientes {
 
     private void buscarPorDni() {
         String dni = leerString("DNI: ");
+        if (!dni.matches("\\d+")) {
+            System.out.println("El DNI debe contener solo números.");
+            return;
+        }
         System.out.println(clienteService.buscarPorDni(dni));
     }
 
@@ -112,5 +137,9 @@ public class MenuClientes {
                 System.out.println("Número inválido.");
             }
         }
+    }
+
+    private boolean esNombreValido(String texto) {
+        return texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+");
     }
 }

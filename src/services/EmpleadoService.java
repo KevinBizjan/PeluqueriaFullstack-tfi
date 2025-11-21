@@ -25,6 +25,13 @@ public class EmpleadoService {
 
     public Empleado crearEmpleado(String id, String nombre, String tipo) {
         Empleado nuevo;
+        if (nombre.isBlank()) {
+            throw new IllegalArgumentException("El nombre del empleado no puede estar vacío.");
+        }
+        if (!tipo.equalsIgnoreCase("barbero") && 
+            !tipo.equalsIgnoreCase("estilista")) {
+            throw new IllegalArgumentException("Tipo de empleado inválido. Use Barbero o Estilista.");
+        }
 
         switch (tipo.toLowerCase()) {
             case "barbero" -> nuevo = new Barbero(id, nombre);
