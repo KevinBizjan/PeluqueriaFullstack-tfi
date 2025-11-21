@@ -25,6 +25,7 @@ public class MenuClientes {
             System.out.println("4. Modificar cliente");
             System.out.println("5. Eliminar cliente");
             System.out.println("6. Listar todos los clientes");
+            System.out.println("7. Mostrar historial de acciones");
             System.out.println("0. Volver");
             op = leerInt("Opción: ");
 
@@ -36,6 +37,7 @@ public class MenuClientes {
                     case 4 -> modificar();
                     case 5 -> eliminar();
                     case 6 -> listar();
+                    case 7 -> clienteService.mostrarHistorial();
                     case 0 -> {}
                     default -> System.out.println("Opción inválida.");
                 }
