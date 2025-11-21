@@ -6,6 +6,7 @@ import app.menus.MenuReportes;
 import app.menus.MenuServicios;
 import app.menus.MenuTurnos;
 import java.util.Scanner;
+import repo.PersistenciaArchivo;
 import services.ClienteService;
 import services.EmpleadoService;
 import services.ServicioService;
@@ -22,8 +23,17 @@ public class Main {
         EmpleadoService empleadoService = new EmpleadoService();
         TurnoService turnoService = new TurnoService();
 
-        seedDatosIniciales(clienteService, servicioService, empleadoService);
+        // ============================
+        // Cargar datos desde JSON
+        // ============================
+        PersistenciaArchivo.cargarTodo(
+                clienteService,
+                servicioService,
+                empleadoService,
+                turnoService
+        );
 
+        // Crear menús
         MenuClientes menuClientes = new MenuClientes(sc, clienteService);
         MenuServicios menuServicios = new MenuServicios(sc, servicioService);
         MenuEmpleados menuEmpleados = new MenuEmpleados(sc, empleadoService);
@@ -44,6 +54,14 @@ public class Main {
                 case 0 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opción inválida.");
             }
+
+            // Guardar cambios en JSON SIEMPRE que pase una vuelta
+            PersistenciaArchivo.guardarTodo(
+                    clienteService,
+                    servicioService,
+                    empleadoService,
+                    turnoService
+            );
 
         } while (opcion != 0);
 
@@ -69,29 +87,5 @@ public class Main {
                 System.out.println("Número inválido. Intente otra vez.");
             }
         }
-    }
-
-    // Seed
-    private static void seedDatosIniciales(
-            ClienteService cs,
-            ServicioService ss,
-            EmpleadoService es
-    ) {
-        try {
-            cs.agregarCliente(new model.Cliente(null, "Juan", "Pérez", "12345678", "155512345"));
-            cs.agregarCliente(new model.Cliente(null, "María", "Gómez", "87654321", "155598765"));
-        } catch (Exception ignored) {}
-
-        try {
-            ss.agregarServicio(new model.Servicio(null, "Corte hombre", 3000.0, 30));
-            ss.agregarServicio(new model.Servicio(null, "Corte mujer", 4000.0, 45));
-            ss.agregarServicio(new model.Servicio(null, "Barba", 1000.0, 15));
-        } catch (Exception ignored) {}
-
-        try {
-            es.crearEmpleado("E1", "Juan", "Barbero");
-            es.crearEmpleado("E2", "Matías", "Barbero");
-            es.crearEmpleado("E3", "Laura", "Estilista");
-        } catch (Exception ignored) {}
     }
 }
