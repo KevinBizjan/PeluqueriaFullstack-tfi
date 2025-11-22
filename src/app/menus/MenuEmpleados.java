@@ -1,7 +1,6 @@
 package app.menus;
 
 import java.util.Scanner;
-import java.util.UUID;
 import model.Empleado;
 import services.EmpleadoService;
 
@@ -43,7 +42,7 @@ public class MenuEmpleados {
 
     private void agregar() {
         try {
-            String id = "E" + UUID.randomUUID().toString().substring(0, 6);
+            String id = empleadoService.generarIdEmpleado();
             String nombre = leerString("Nombre: ");
             String tipo = leerString("Tipo (Barbero/Estilista): ");
 

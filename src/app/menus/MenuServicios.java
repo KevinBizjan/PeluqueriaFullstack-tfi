@@ -50,6 +50,7 @@ public class MenuServicios {
     }
 
     private void agregar() {
+        String id = null;
         String nombre = leerString("Nombre: ");
         if (nombre.isBlank())
             throw new IllegalArgumentException("El nombre no puede estar vacío.");
