@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 import java.util.stream.IntStream;
 import model.Cliente;
 import model.Empleado;
@@ -114,7 +113,7 @@ public class MenuTurnos {
                 return;
             }
 
-            String id = "T" + UUID.randomUUID().toString().substring(0, 6);
+            String id = turnoService.generarIdTurno();
             turnoService.registrarTurno(id, cliente, empleado, servicio, fechaHora);
 
             System.out.println("Turno creado: " + id);

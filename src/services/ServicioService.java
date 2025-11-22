@@ -12,16 +12,16 @@ package services;
 import exceptions.ServicioInvalidoException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import model.Servicio;
 
 public class ServicioService {
 
     private final List<Servicio> servicios = new ArrayList<>();
-
-    public Servicio agregarServicio(Servicio servicio) {
+    private int contadorServicios = 1;
     
-    if (servicio.getPrecioBase() <= 0) {
+    public Servicio agregarServicio(Servicio servicio) {
+
+        if (servicio.getPrecioBase() <= 0) {
             throw new ServicioInvalidoException("El precio no puede ser negativo ni cero.");
         }
         if (servicio.getDuracionMinutos() <= 0) {
@@ -30,29 +30,25 @@ public class ServicioService {
         if (servicio.getNombre() == null || servicio.getNombre().isBlank()) {
             throw new ServicioInvalidoException("El nombre del servicio no puede estar vacío.");
         }
-
-    String nuevoId = (servicio.getId() == null || servicio.getId().isBlank())
-            ? "S" + UUID.randomUUID().toString().substring(0, 6)
-            : servicio.getId();
-
-    boolean existe = servicios.stream()
-            .anyMatch(s -> nuevoId.equalsIgnoreCase(s.getId()));
-
-    if (existe) {
-        throw new IllegalArgumentException("Ya existe un servicio con ID: " + nuevoId);
+        String idAsignado;
+        if (servicio.getId() != null && !servicio.getId().isBlank()) {
+            idAsignado = servicio.getId();
+            try {
+                int nro = Integer.parseInt(idAsignado.substring(1));
+                if (nro >= contadorServicios) contadorServicios = nro + 1;
+            } catch (Exception ignore) {}
+        } else {
+            idAsignado = generarIdServicio();
+        }
+        Servicio nuevo = new Servicio(
+                idAsignado,
+                servicio.getNombre(),
+                servicio.getPrecioBase(),
+                servicio.getDuracionMinutos()
+        );
+        servicios.add(nuevo);
+        return nuevo;
     }
-
-    Servicio nuevo = new Servicio(
-            nuevoId,
-            servicio.getNombre(),
-            servicio.getPrecioBase(),
-            servicio.getDuracionMinutos()
-    );
-
-    servicios.add(nuevo);
-    return nuevo;
-    }
-
 
     public Servicio buscarPorId(String id) {
         return servicios.stream()
@@ -83,4 +79,9 @@ public class ServicioService {
     public List<Servicio> listarServicios() {
         return servicios;
     }
+
+    public String generarIdServicio() {
+        return "S" + (contadorServicios++);
+    }
+
 }

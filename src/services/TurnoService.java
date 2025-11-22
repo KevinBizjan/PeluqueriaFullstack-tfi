@@ -24,12 +24,19 @@ import model.Turno;
 public class TurnoService {
 
     private final List<Turno> turnos = new ArrayList<>();
-
+    private int contadorTurnos = 1;
+    
     public void registrarTurno(String id,
-                               Cliente cliente,
-                               Empleado empleado,
-                               Servicio servicio,
-                               LocalDateTime fechaHora) {
+                            Cliente cliente,
+                            Empleado empleado,
+                            Servicio servicio,
+                            LocalDateTime fechaHora) {
+        if (id != null && id.startsWith("T")) {
+            try {
+                int nro = Integer.parseInt(id.substring(1));
+                if (nro >= contadorTurnos) contadorTurnos = nro + 1;
+            } catch (Exception ignore) {}
+        }
         Turno t = new Turno(id, cliente, empleado, servicio, fechaHora);
         if (fechaHora.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("La fecha del turno no puede ser anterior a hoy.");
@@ -190,5 +197,9 @@ public class TurnoService {
             }
         }
         return null;
+    }
+
+    public String generarIdTurno() {
+        return "T" + (contadorTurnos++);
     }
 }
